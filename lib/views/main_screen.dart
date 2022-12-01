@@ -3,12 +3,17 @@ import 'package:todo_list/model/todo.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final _key = GlobalKey<FormState>();
 
   var todoInput = TextEditingController();
-
-  MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +61,11 @@ class MainScreen extends StatelessWidget {
                           if (!_key.currentState!.validate()) {
                             return;
                           }
-                          insert(Todo(todoInput.text, 0));
+
+                          setState(() {
+                            insert(Todo(todoInput.text, 0));
+                          });
+
                           showDialogSucess(
                               context, "Tarefa criada com sucesso!");
                         },
@@ -87,11 +96,13 @@ class MainScreen extends StatelessWidget {
                                                     ? false
                                                     : true,
                                             onChanged: (bool? value) {
-                                              update(Todo(
-                                                  snapshot.data![index].name,
-                                                  value! ? 1 : 0,
-                                                  id: snapshot
-                                                      .data![index].id));
+                                              setState(() {
+                                                update(Todo(
+                                                    snapshot.data![index].name,
+                                                    value! ? 1 : 0,
+                                                    id: snapshot
+                                                        .data![index].id));
+                                              });
                                             },
                                           ),
                                         ],
