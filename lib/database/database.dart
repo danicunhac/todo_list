@@ -11,11 +11,8 @@ const String ColumnDone = 'done';
 // Abrir a conexão com o banco de dados
 Future<Database> getDatabase() {
   return getDatabasesPath().then((dbPath) {
-    print("dbPath: $dbPath");
-    // /data/data/pacote.do.aplicativo/databases/
     final String path = join(dbPath, "todos.db");
 
-    // /data/data/pacote.do.aplicativo/databases/todos.db
     return openDatabase(path, onCreate: (db, version) async {
       await db.execute(
           "CREATE TABLE todos($ColumnId INTEGER PRIMARY KEY AUTOINCREMENT, $ColumnName TEXT, $ColumnDone INTEGER)");
@@ -25,7 +22,7 @@ Future<Database> getDatabase() {
 
 Future<int> insert(Todo todo) {
   return getDatabase().then((db) {
-    Map<String, dynamic> values = Map();
+    Map<String, dynamic> values = {};
     values[ColumnName] = todo.name;
     values[ColumnDone] = todo.done;
 
@@ -43,7 +40,16 @@ Future<List<Todo>> findAll() {
 
         todos.add(todo);
       }
-      print(todos.toString());
+
+      todos.sort((a, b) {
+        if (a.done == 0 && b.done == 1) {
+          return -1;
+        } else if (a.done == 1 && b.done == 0) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
       return todos;
     });
   });
@@ -52,7 +58,7 @@ Future<List<Todo>> findAll() {
 Future<int> update(Todo todo) async {
   Database db = await getDatabase();
 
-  Map<String, dynamic> values = Map();
+  Map<String, dynamic> values = {};
   values['name'] = todo.name;
   values['done'] = todo.done;
 

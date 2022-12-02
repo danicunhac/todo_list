@@ -2,7 +2,6 @@ import 'package:todo_list/database/database.dart';
 import 'package:todo_list/model/todo.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -84,7 +83,13 @@ class _MainScreenState extends State<MainScreen> {
                                 itemBuilder: (context, index) {
                                   return Card(
                                     child: ListTile(
-                                      title: Text(snapshot.data![index].name),
+                                      title: Text(snapshot.data![index].name,
+                                          style: TextStyle(
+                                              decoration: snapshot
+                                                          .data![index].done ==
+                                                      1
+                                                  ? TextDecoration.lineThrough
+                                                  : null)),
                                       trailing: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [

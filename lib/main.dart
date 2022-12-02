@@ -2,7 +2,7 @@ import 'package:todo_list/views/main_screen.dart';
 import 'package:flutter/material.dart';
 
 main() {
-  runApp(MainApp());
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -10,7 +10,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: MainScreen(),
     );
   }
